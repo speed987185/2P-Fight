@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://c732cbsc62vdu"]
+
+[ext_resource type="Texture2D" uid="uid://dcj2g5ghcn006" path="res://icon.svg" id="1_mkara"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mkara"]
+size = Vector2(127, 127)
+
+[node name="player_2" type="CharacterBody2D" unique_id=1198036744]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=412496146]
+modulate = Color(0, 0, 0, 1)
+texture = ExtResource("1_mkara")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D" unique_id=1855609174]
+shape = SubResource("RectangleShape2D_mkara")

@@ -4,7 +4,7 @@ class_name Player1
 
 const BACK_AREA_OFFSET: float = 18.0
 
-var speed: float = 600
+var speed: float = 1000 
 var jump_force: float = -600
 var gravity: float = 800
 var attacking: bool = false

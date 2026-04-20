@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bpuyi7udjkaas" path="res://assets/player/hitting.png" id="2_lp8rx"]
 [ext_resource type="Texture2D" uid="uid://cgoyd6ipyuk6y" path="res://assets/player/jump.png" id="3_lp8rx"]
 [ext_resource type="Texture2D" uid="uid://1wuefq8ujv3p" path="res://assets/player/running.png" id="4_jkush"]
+[ext_resource type="Texture2D" uid="uid://ci2glj3r1m303" path="res://assets/64x64 textures (37).png" id="6_lp8rx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jkush"]
 atlas = ExtResource("2_lp8rx")
@@ -175,6 +176,13 @@ size = Vector2(8, 50)
 [node name="Player1" type="CharacterBody2D" unique_id=1]
 scale = Vector2(3, 3)
 script = ExtResource("1_c4k0l")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=322465171]
+position = Vector2(-0.66667175, 0.6666641)
+scale = Vector2(1.578125, 1.2558596)
+color = Color(0.08627451, 1, 0, 1)
+texture = ExtResource("6_lp8rx")
+texture_scale = 5.74
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2]
 texture_filter = 1

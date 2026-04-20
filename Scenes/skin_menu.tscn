@@ -1,6 +1,17 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dimvfanxh3714"]
 
-[ext_resource type="Script" path="res://scripts/skin_menu.gd" id="1_iwcj0"]
+[ext_resource type="Theme" uid="uid://b87gv25t76657" path="res://cartoon_theme.tres" id="1_kmead"]
+[ext_resource type="Script" uid="uid://c0sljeav1ynn1" path="res://scripts/skin_menu.gd" id="1_skinmenu"]
+[ext_resource type="Shader" uid="uid://67wpl55wg858" path="res://scripts/skin_menu_bg.gdshader" id="2_kmead"]
+[ext_resource type="Script" uid="uid://c1p7h5qo0shlu" path="res://scripts/bg_lvl.gd" id="3_2tr61"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xbgkp"]
+shader = ExtResource("2_kmead")
+shader_parameter/speed = 1.2
+shader_parameter/strength = 0.03
+shader_parameter/scale = 8.0
+shader_parameter/ripple_center = Vector2(0.5, 0.5)
+shader_parameter/ripple_time = 0.0
 
 [node name="SkinMenu" type="Control" unique_id=1107727386]
 layout_mode = 3
@@ -9,16 +20,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_iwcj0")
+theme = ExtResource("1_kmead")
+script = ExtResource("1_skinmenu")
 
-[node name="Background" type="ColorRect" parent="." unique_id=534416905]
+[node name="bg" type="ColorRect" parent="." unique_id=1230682911]
+material = SubResource("ShaderMaterial_xbgkp")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.2, 0.2, 0.3, 1)
+script = ExtResource("3_2tr61")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1358171923]
 layout_mode = 1
@@ -27,14 +40,18 @@ anchor_left = 0.1
 anchor_top = 0.1
 anchor_right = 0.9
 anchor_bottom = 0.9
+offset_top = -52.0
+offset_bottom = -52.0
 
 [node name="Player1Label" type="Label" parent="VBoxContainer" unique_id=625049598]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "PLAYER 1 SKINS"
+horizontal_alignment = 1
 
 [node name="Player1Skins" type="HBoxContainer" parent="VBoxContainer" unique_id=1968949335]
 layout_mode = 2
+alignment = 1
 
 [node name="Spacer1" type="Control" parent="VBoxContainer" unique_id=1893089189]
 custom_minimum_size = Vector2(0, 30)
@@ -44,23 +61,26 @@ layout_mode = 2
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "PLAYER 2 SKINS"
+horizontal_alignment = 1
 
 [node name="Player2Skins" type="HBoxContainer" parent="VBoxContainer" unique_id=1930193160]
 layout_mode = 2
+alignment = 1
 
 [node name="Spacer2" type="Control" parent="VBoxContainer" unique_id=2126531811]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
 [node name="BackButton" type="Button" parent="VBoxContainer" unique_id=1309797122]
-custom_minimum_size = Vector2(150, 50)
+custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 35
 text = "BACK"
 
 [node name="PlayButton" type="Button" parent="VBoxContainer" unique_id=136771555]
+custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
-text = "Play"
-
-[node name="@Button@2" type="Button" parent="VBoxContainer" unique_id=118135895]
-layout_mode = 2
-text = "Play"
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 35
+text = "PLAY"

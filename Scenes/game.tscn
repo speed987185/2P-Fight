@@ -227,11 +227,11 @@ color = Color(0.1, 0.15, 0.3, 1)
 
 [node name="Player1" parent="." unique_id=1475455660 instance=ExtResource("2_player1")]
 position = Vector2(-883.9999, 349)
-scale = Vector2(5, 5)
+scale = Vector2(7, 7)
 
 [node name="Player2" parent="." unique_id=418206560 instance=ExtResource("3_player2")]
 position = Vector2(2191, 360)
-scale = Vector2(5, 5)
+scale = Vector2(7, 7)
 
 [node name="GameController" type="Node2D" parent="." unique_id=420436468]
 script = ExtResource("4_controller")

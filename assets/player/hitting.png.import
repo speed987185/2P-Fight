@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpjtvriy448m"
-path="res://.godot/imported/sausage_sprites.png-f7028c28a85e3480013bc53fe28010de.ctex"
+uid="uid://bpuyi7udjkaas"
+path="res://.godot/imported/hitting.png-30bfab58ad96e8bac3bb1ba285f1c3c0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/player/sausage_sprites.png"
-dest_files=["res://.godot/imported/sausage_sprites.png-f7028c28a85e3480013bc53fe28010de.ctex"]
+source_file="res://assets/player/hitting.png"
+dest_files=["res://.godot/imported/hitting.png-30bfab58ad96e8bac3bb1ba285f1c3c0.ctex"]
 
 [params]
 

@@ -10,13 +10,7 @@ class_name SkinMenu
 var skin_variants: Array[int] = [0, 1, 2, 3] # 0 for normal, 1, 2, 3 for variants
 
 func _ready() -> void:
-	self.theme = load("res://cartoon_theme.tres")
-	for btn in [back_button, play_button]:
-		if btn:
-			for prop in ["normal", "hover", "pressed", "focus"]:
-				btn.remove_theme_stylebox_override(prop)
-			for prop in ["font_color", "font_hover_color", "font_pressed_color"]:
-				btn.remove_theme_color_override(prop)
+
 
 	_create_skin_buttons(p1_skin_container, 1)
 	_create_skin_buttons(p2_skin_container, 2)

@@ -15,13 +15,8 @@ var vbox_center: Vector2
 var arena_chooser_right: Vector2
 
 func _ready() -> void:
-	self.theme = load("res://cartoon_theme.tres")
-	for btn in [play_button, quit_button, arena1_button, arena2_button, back_button]:
-		for prop in ["normal", "hover", "pressed", "focus"]:
-			btn.remove_theme_stylebox_override(prop)
-		for prop in ["font_color", "font_hover_color", "font_pressed_color"]:
-			btn.remove_theme_color_override(prop)
-			
+
+
 	play_button.pressed.connect(_on_play_pressed)
 	quit_button.pressed.connect(_on_quit_pressed)
 	

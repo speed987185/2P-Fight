@@ -50,6 +50,17 @@ func _ready() -> void:
 	vbox_container.move_child(settings_btn, 1)
 	settings_btn.pressed.connect(_on_settings_pressed)
 
+	var multi_btn = Button.new()
+	multi_btn.text = "Multiplayer"
+	multi_btn.custom_minimum_size = Vector2(200, 60)
+	multi_btn.add_theme_color_override("font_color", Color(0.000002, 0, 0.666229, 1))
+	multi_btn.add_theme_font_size_override("font_size", 35)
+	multi_btn.add_theme_stylebox_override("normal", sb_normal)
+	multi_btn.add_theme_stylebox_override("hover", sb_hover)
+	vbox_container.add_child(multi_btn)
+	vbox_container.move_child(multi_btn, 2)
+	multi_btn.pressed.connect(_on_multiplayer_pressed)
+
 	var sm = preload("res://Scenes/settings_menu.tscn").instantiate()
 	sm.hide()
 	sm.name = "SettingsMenu"
@@ -63,13 +74,8 @@ func _ready() -> void:
 	vbox_center = vbox_container.position
 	arena_chooser_right = arena_chooser.position
 	
-	menu_bg_music = AudioStreamPlayer.new()
-	menu_bg_music.stream = preload("res://assets/Sfx/main_menu_bg.mp3")
-	menu_bg_music.volume_db = -6.0
-	menu_bg_music.bus = "Music"
-	add_child(menu_bg_music)
-	menu_bg_music.play()
-	menu_bg_music.finished.connect(menu_bg_music.play)
+	
+	# Menu BGM is now handled by BGMManager autoload
 
 func _play_click() -> void:
 	var click_sfx: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -81,14 +87,19 @@ func _play_click() -> void:
 
 func _on_play_pressed() -> void:
 	_play_click()
+	var gm: GameManager = GameManager.instance
+	if gm != null:
+		gm.is_multiplayer_session = false
 	# Slide out main menu and slide in arena chooser
-	var tween: Tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tween.tween_property(vbox_container, "position:x", vbox_center.x - 1000.0, 0.5)
-	tween.tween_property(arena_chooser, "position:x", vbox_center.x, 0.5)
+	SceneTransition.change_scene("res://Scenes/skin_menu.tscn")
 
 func _on_settings_pressed() -> void:
 	_play_click()
 	$SettingsMenu.show()
+
+func _on_multiplayer_pressed() -> void:
+	_play_click()
+	get_tree().change_scene_to_file("res://Scenes/multiplayer_menu.tscn")
 
 func _on_back_pressed() -> void:
 	_play_click()
@@ -102,6 +113,7 @@ func _on_arena1_pressed() -> void:
 	get_tree().paused = false
 	var gm: GameManager = GameManager.instance
 	if gm != null:
+		gm.is_multiplayer_session = false
 		gm.selected_arena = "res://Scenes/game.tscn"
 	SceneTransition.change_scene("res://Scenes/skin_menu.tscn")
 
@@ -110,6 +122,7 @@ func _on_arena2_pressed() -> void:
 	get_tree().paused = false
 	var gm: GameManager = GameManager.instance
 	if gm != null:
+		gm.is_multiplayer_session = false
 		gm.selected_arena = "res://Scenes/game2.tscn"
 	SceneTransition.change_scene("res://Scenes/skin_menu.tscn")
 

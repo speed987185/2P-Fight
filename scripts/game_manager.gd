@@ -12,6 +12,7 @@ var player1_skin_id: int = 0
 var player2_skin_id: int = 0
 var selected_arena: String = "res://Scenes/game.tscn"
 var has_game_ended: bool = false
+var is_multiplayer_session: bool = false
 var last_winner: int = 0
 
 static var instance: GameManager
@@ -70,6 +71,21 @@ func end_game(winner: int) -> void:
 	has_game_ended = true
 	last_winner = winner
 	game_over.emit(winner)
+
+func cleanup_multiplayer_session() -> void:
+	if multiplayer.multiplayer_peer:
+		multiplayer.multiplayer_peer.close()
+		multiplayer.multiplayer_peer = null
+
+	if get_tree().root.has_node("LANDiscovery"):
+		var discovery = get_tree().root.get_node("LANDiscovery")
+		if discovery.has_method("stop_broadcasting"):
+			discovery.stop_broadcasting()
+		discovery.queue_free()
+
+	if get_tree().root.has_node("MultiplayerManager"):
+		get_tree().root.get_node("MultiplayerManager").queue_free()
+	is_multiplayer_session = false
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.keycode == KEY_ESCAPE and event.pressed and not event.echo:

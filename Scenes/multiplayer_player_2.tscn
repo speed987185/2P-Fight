@@ -1,0 +1,72 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/multiplayer_player.gd" id="1_mplayer"]
+[ext_resource type="SpriteFrames" path="res://assets/player/improved/sausage_frames.tres" id="sausage_frames"]
+[ext_resource type="Texture2D" uid="uid://ci2glj3r1m303" path="res://assets/64x64 textures (37).png" id="6_lp8rx"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p0e4v"]
+radius = 9.666668
+height = 19.333336
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eus2p"]
+radius = 15.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6cafw"]
+size = Vector2(8, 50)
+
+[sub_resource type="LabelSettings" id="LabelSettings_cgts5"]
+font_size = 18
+font_color = Color(1, 0.3, 0.3, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Player2" type="CharacterBody2D" unique_id=1]
+scale = Vector2(3, 3)
+script = ExtResource("1_mplayer")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=322465174]
+position = Vector2(-0.66667175, 0.6666641)
+scale = Vector2(1.578125, 1.2558596)
+color = Color(1, 0, 0, 1)
+texture = ExtResource("6_lp8rx")
+texture_scale = 5.74
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2]
+texture_filter = 1
+scale = Vector2(0.25, 0.25)
+sprite_frames = ExtResource("sausage_frames")
+animation = &"hit"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=3]
+position = Vector2(10, 14.333333)
+shape = SubResource("CapsuleShape2D_p0e4v")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=4]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=5]
+position = Vector2(10, 0)
+shape = SubResource("CircleShape2D_eus2p")
+
+[node name="backarea" type="Area2D" parent="." unique_id=6]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="backarea" unique_id=7]
+position = Vector2(-18, 1)
+shape = SubResource("RectangleShape2D_6cafw")
+
+[node name="PlayerIndicator" type="Label" parent="." unique_id=1410210136]
+offset_left = -15.0
+offset_top = -120.0
+offset_right = -14.0
+offset_bottom = -100.0
+text = "P2
+▼"
+label_settings = SubResource("LabelSettings_cgts5")
+horizontal_alignment = 1
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="area_exited" from="Hitbox" to="." method="_on_hitbox_area_exited"]

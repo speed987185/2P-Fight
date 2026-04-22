@@ -82,6 +82,8 @@ func _on_resume_pressed() -> void:
 
 func _on_main_menu_pressed() -> void:
 	get_tree().paused = false
+	if game_manager:
+		game_manager.cleanup_multiplayer_session()
 	SceneTransition.change_scene("res://Scenes/main_menu.tscn")
 
 func _on_quit_pressed() -> void:

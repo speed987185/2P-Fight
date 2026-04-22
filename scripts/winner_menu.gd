@@ -22,6 +22,11 @@ func _ready() -> void:
 	
 	if game_manager:
 		game_manager.game_over.connect(_on_game_over)
+		
+	if multiplayer.multiplayer_peer and multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+		if not multiplayer.is_server():
+			play_again_button.disabled = true
+			main_menu_button.disabled = true
 
 func _on_game_over(winner: int) -> void:
 	# Capture screenshot BEFORE showing UI or pausing
@@ -108,11 +113,29 @@ func _play_appear_animation() -> void:
 		photo_tween.parallel().tween_property(photo_frame, "rotation", -0.05, 0.6)
 
 func _on_play_again_pressed() -> void:
+	if multiplayer.multiplayer_peer and multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+		if multiplayer.is_server():
+			rpc("sync_play_again")
+	else:
+		sync_play_again()
+
+@rpc("authority", "call_local", "reliable")
+func sync_play_again() -> void:
 	get_tree().paused = false
 	get_tree().reload_current_scene()
 
 func _on_main_menu_pressed() -> void:
+	if multiplayer.multiplayer_peer and multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+		if multiplayer.is_server():
+			rpc("sync_main_menu")
+	else:
+		sync_main_menu()
+
+@rpc("authority", "call_local", "reliable")
+func sync_main_menu() -> void:
 	get_tree().paused = false
+	if game_manager:
+		game_manager.cleanup_multiplayer_session()
 	SceneTransition.change_scene("res://Scenes/main_menu.tscn")
 
 func _on_quit_pressed() -> void:

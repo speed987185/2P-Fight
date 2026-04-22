@@ -10,15 +10,20 @@ const BUTTON_CLICK_SOUND: AudioStream = preload("res://assets/Sfx/button click.m
 @onready var play_button: Button = $VBoxContainer/PlayButton
 
 var skin_variants: Array[int] = [0, 1, 2, 3] # 0 for normal, 1, 2, 3 for variants
+var skin_containers: Dictionary[int, HBoxContainer] = {}
 
 func _ready() -> void:
-
-
+	skin_containers[1] = p1_skin_container
+	skin_containers[2] = p2_skin_container
 	_create_skin_buttons(p1_skin_container, 1)
 	_create_skin_buttons(p2_skin_container, 2)
 
 	back_button.pressed.connect(_on_back_pressed)
 	play_button.pressed.connect(_on_play_pressed)
+	
+	if multiplayer.multiplayer_peer and multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+		if not multiplayer.is_server():
+			play_button.disabled = true
 
 func _create_skin_buttons(container: HBoxContainer, player_num: int) -> void:
 	var gm: GameManager = GameManager.instance
@@ -89,7 +94,7 @@ func _create_skin_buttons(container: HBoxContainer, player_num: int) -> void:
 		tick.visible = (variant_id == current_skin)
 		button.add_child(tick)
 				
-		button.pressed.connect(_on_skin_selected.bind(player_num, variant_id, container))
+		button.pressed.connect(_on_skin_selected.bind(player_num, variant_id))
 		button.mouse_entered.connect(func():
 			var tween: Tween = create_tween()
 			tween.tween_property(button, "scale", Vector2(1.15, 1.15), 0.15).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
@@ -113,28 +118,59 @@ func _play_sfx(sound: AudioStream) -> void:
 func _play_button_click_sound() -> void:
 	_play_sfx(BUTTON_CLICK_SOUND)
 
-func _on_skin_selected(player_num: int, variant_id: int, container: HBoxContainer = null) -> void:
+func _on_skin_selected(player_num: int, variant_id: int) -> void:
+	if multiplayer.multiplayer_peer and multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+		if multiplayer.is_server() and player_num == 1:
+			rpc("sync_skin", player_num, variant_id)
+		elif not multiplayer.is_server() and player_num == 2:
+			rpc_id(1, "sync_skin", player_num, variant_id)
+	else:
+		_apply_skin_selected(player_num, variant_id)
+
+@rpc("any_peer", "call_local", "reliable")
+func sync_skin(player_num: int, variant_id: int) -> void:
+	if multiplayer.is_server():
+		# Server broadcasts to all
+		rpc("broadcast_skin", player_num, variant_id)
+	_apply_skin_selected(player_num, variant_id)
+
+@rpc("authority", "call_local", "reliable")
+func broadcast_skin(player_num: int, variant_id: int) -> void:
+	_apply_skin_selected(player_num, variant_id)
+
+func _apply_skin_selected(player_num: int, variant_id: int) -> void:
 	_play_button_click_sound()
 	var gm: GameManager = GameManager.instance
 	if gm != null:
 		gm.set_player_skin(player_num, Color.WHITE, variant_id)
 	print("Player ", player_num, " selected skin ", variant_id)
-	
-	if container:
-		for btn in container.get_children():
-			if btn is Button:
-				var tick = btn.get_node_or_null("TickLabel")
-				if tick:
-					tick.visible = (btn.get_meta("variant_id") == variant_id)
+	_update_skin_ticks(player_num, variant_id)
+
+func _update_skin_ticks(player_num: int, variant_id: int) -> void:
+	var container: HBoxContainer = skin_containers.get(player_num, null)
+	if container == null:
+		return
+	for btn in container.get_children():
+		if btn is Button:
+			var tick: Label = btn.get_node_or_null("TickLabel")
+			if tick:
+				tick.visible = (btn.get_meta("variant_id") == variant_id)
 
 func _on_play_pressed() -> void:
 	_play_button_click_sound()
-	var gm: GameManager = GameManager.instance
-	if gm != null and gm.selected_arena != "":
-		SceneTransition.change_scene(gm.selected_arena)
+	if multiplayer.multiplayer_peer and multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+		if multiplayer.is_server():
+			rpc("sync_play")
 	else:
-		SceneTransition.change_scene("res://Scenes/game.tscn")
+		SceneTransition.change_scene("res://Scenes/arena_menu.tscn")
+
+@rpc("authority", "call_local", "reliable")
+func sync_play() -> void:
+	SceneTransition.change_scene("res://Scenes/arena_menu.tscn")
 
 func _on_back_pressed() -> void:
 	_play_button_click_sound()
+	if multiplayer.multiplayer_peer:
+		multiplayer.multiplayer_peer.close()
+		multiplayer.multiplayer_peer = null
 	SceneTransition.change_scene("res://Scenes/main_menu.tscn")

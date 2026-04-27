@@ -13,6 +13,9 @@ remember this feature doesnt work on web version i  have provided the zip for ex
 q for dash for player1 , p2 - u 
 e for invisibilty for p1 , p2- o
 
+# recommendation:
+i highly recommend to play it with your firends of your lio bother/ sis to get the fun experince playing it this game cant be played single player you can but i doubt it wont be fun 
+
 
 # how can you follow up to make a game like this
 every game is made step by step scene by scene for game like this first step is to make a very nice sprite player or find one then setting up 2 player and making them functional and for multiplayer stuff that can be addded later on after you made a base game , second step is to make a arena that a user is going to play on very important map need to real good , and easy but effective is making game interactable adding button reset button pause main menu i have added all of the thing you can check it out just make a different scene for all menus , finding and adding ear pleasures audio like player should feel the satisfaction just form your audio and also a ui i have use shader in godot to make my ui look good like player in front woobly effect rainbow background you can watch my scripts and modify it or learn form youtube and after all is done next step can be adding miltiplayer or you game is already ready or better to play loccally there are many video out there about high level and low level multiplayer system i highly recommend making high level multiplayer as it is a easiest for simple game and better one to rather than getting stucked at hard and half game.... thank youuuuu also dont forget to make something special about your game like in mine own you need to hit the back of player with using skills like dashing very fast or being invisible for some time peace <3
@@ -21,12 +24,12 @@ every game is made step by step scene by scene for game like this first step is 
 its not only your tipical 2 player game humm wwanna play hidden no worries this game can aslo be played in multiplayer online 
 game needed to be downlaoded and played within same wifi to play multiplayer
 
-# - crazy visiuals
-# - -nice player aniamtion and sfx
-# - many more about shaders in godot
-  # - skin selector use any skin of your wish
-  # - unique mechanisham
-  # - unique abilities 
+# visiuals
+# unique player aniamtion and sfx
+#  many more about shaders in godot
+# skin selector use any skin of your wish
+#  interesting gameplay mechanisham
+# unique abilities 
 
 # controls :
 they are explained in itch page and downlaod link of exe file is also available in itch : https://abishek-kk.itch.io/sauceit
